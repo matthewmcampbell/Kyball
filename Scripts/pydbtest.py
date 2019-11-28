@@ -2,7 +2,7 @@ import mysql.connector
 import pandas as pd
 import csv
 
-input_csv = "C:/cloud/Kyball/data_source/baseballdatabank-2019.2/core/Batting.csv"
+input_csv = "C:/Users/mmcam/Projects/Kyball/data_source/baseballdatabank-2019.2/core/Batting.csv"
 host = "testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
 user = "kylexi"
 passwd = "Nine9clock!"
@@ -24,10 +24,6 @@ def check_tbl_exists(tbl_name, create_tbl_str):
 	except mysql.connector.errors.ProgrammingError as e:
 		mycursor.execute(create_tbl_str)
 
-# df = pd.read_csv("C:/cloud/Kyball/data_source/baseballdatabank-2019.2/core/Batting.csv")
-# print(df)
-# exit()
-# df.to_sql()
 people_tbl_str = """CREATE TABLE People (
 	id INT NOT NULL AUTO_INCREMENT,
 	playerID VARCHAR(30) NOT NULL,
@@ -103,9 +99,9 @@ def write_data(tbl_name, tbl_str, path_to_csv):
 	data = list(map(lambda x: tuple(x), data))
 	abstract_values = str(tuple(['%s']*len(headers)))
 	sql_cmd = "INSERT INTO {} {} VALUES {};".format(tbl_name, data, abstract_values)
-	print(data[1])
+	# print(data[1])
 	for i in range(1, len(data)):
-		print(sql_cmd, data[i])
+		# print(sql_cmd, data[i])
 		mycursor.execute(sql_cmd, data[i])
 	exit()
 
