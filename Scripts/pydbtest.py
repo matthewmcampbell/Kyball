@@ -110,7 +110,6 @@ def write_data(tbl_name, tbl_str, path_to_csv):
 		# print(sql_cmd, data[i])
 		mycursor.execute(sql_cmd, data[i])
 	mycursor.commit()
-	exit()
 
 def main():
 	make_db_and_switch(database)
