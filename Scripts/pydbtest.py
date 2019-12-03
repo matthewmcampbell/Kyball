@@ -2,19 +2,26 @@ import mysql.connector
 import pandas as pd
 import csv
 
-input_csv = "C:/Users/mmcam/Projects/Kyball/data_source/baseballdatabank-2019.2/core/Batting.csv"
+input_csv = "/home/ec2-user/Projects/Kyball/data_source/baseballdatabank-2019.2/core/Batting.csv"
 host = "testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
 user = "kylexi"
 passwd = "Nine9clock!"
-database = "test_db"
+database = "Kyball_db"
 
 connection = mysql.connector.connect(
 	host = host,
 	user = user,
 	passwd = passwd,
-	database = database
+	# database = database
 )
 mycursor = connection.cursor(buffered=True)
+
+def make_db_and_switch(db_name):
+	try:
+		mycursor.execute('CREATE DATABASE {}'.format(db_name))
+		mycursor.execute('USE {}'.format(db_name))
+	except:
+		mycursor.execute('USE {}'.format(db_name))
 
 def check_tbl_exists(tbl_name, create_tbl_str):
 	try:
@@ -84,10 +91,6 @@ def pull_col_headers(tbl_str):
 	list_by_commas = tbl_str.split(',')[1:-1]
 	return(tuple(map(lambda x: x.split(' ')[0].strip(), list_by_commas)))
 
-check_tbl_exists("People", people_tbl_str)
-check_tbl_exists("Batting", batting_tbl_str)
-mycursor.execute("SHOW TABLES;")
-
 def write_data(tbl_name, tbl_str, path_to_csv):
 	headers = pull_col_headers(tbl_str)
 	data = csv.reader(open(path_to_csv,'r'))
@@ -101,8 +104,19 @@ def write_data(tbl_name, tbl_str, path_to_csv):
 	sql_cmd = "INSERT INTO {} {} VALUES {};".format(tbl_name, data, abstract_values)
 	# print(data[1])
 	for i in range(1, len(data)):
+		print(i, len(data))
 		# print(sql_cmd, data[i])
 		mycursor.execute(sql_cmd, data[i])
 	exit()
 
-write_data('Batting', batting_tbl_str, input_csv)
+def main():
+	make_db_and_switch(database)
+
+	check_tbl_exists("People", people_tbl_str)
+	check_tbl_exists("Batting", batting_tbl_str)
+	mycursor.execute("SHOW TABLES;")
+
+	write_data('Batting', batting_tbl_str, input_csv)
+
+if __name__ == '__main__':
+	main()
