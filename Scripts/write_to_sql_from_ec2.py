@@ -2,7 +2,7 @@ import mysql.connector
 import pandas as pd
 import csv
 
-input_csv = "/home/ec2-user/Projects/Kyball/data_source/baseballdatabank-2019.2/core/Batting.csv"
+input_csv = "/home/ec2-user/Projects/Kyball/data_source/baseballdatabank-2019.2/core/"
 host = "testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
 user = "kylexi"
 passwd = "Nine9clock!"
@@ -96,6 +96,7 @@ def pull_col_headers(tbl_str):
 	return header_as_string[:-2]
 
 def write_data(tbl_name, tbl_str, path_to_csv):
+	path_to_csv += tbl_name + '.csv' #update path to specific csv
 	headers = pull_col_headers(tbl_str)
 	data = csv.reader(open(path_to_csv,'r'))
 	data = list(data)[1:]
@@ -115,6 +116,7 @@ def main():
 	check_tbl_exists("Batting", batting_tbl_str)
 	mycursor.execute("SHOW TABLES;")
 
+	write_data('People', people_tbl_str, input_csv)
 	write_data('Batting', batting_tbl_str, input_csv)
 
 if __name__ == '__main__':
