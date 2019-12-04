@@ -107,7 +107,7 @@ def write_data(tbl_name, tbl_str, path_to_csv):
 		sql_cmd = "INSERT INTO {} ({}) VALUES ({});".format(tbl_name, headers, abstract_values)
 		mycursor.execute(sql_cmd, data[i])
 		print(i)
-	mycursor.commit()
+	connection.commit()
 
 def main():
 	make_db_and_switch(database)
