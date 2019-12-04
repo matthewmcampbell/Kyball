@@ -95,20 +95,17 @@ def pull_col_headers(tbl_str):
 		header_as_string += header + ', '
 	return header_as_string[:-2]
 
-print(pull_col_headers(batting_tbl_str))
-exit()
 def write_data(tbl_name, tbl_str, path_to_csv):
 	headers = pull_col_headers(tbl_str)
 	data = csv.reader(open(path_to_csv,'r'))
 	data = list(data)[1:]
 	data = list(map(lambda x: tuple(x), data))
-	abstract_values = str(tuple(['%s']*len(headers)))
-	sql_cmd = "INSERT INTO {} ({}) VALUES {};".format(tbl_name, headers, data[i])
-	# print(data[1])
+	abstract_values = '%s, ' * len(headers.split(','))
+	abstract_values = abstract_values[:-2]
 	for i in range(1, len(data)):
-		print(i, len(data))
-		# print(sql_cmd, data[i])
+		sql_cmd = "INSERT INTO {} ({}) VALUES ({});".format(tbl_name, headers, abstract_values)
 		mycursor.execute(sql_cmd, data[i])
+		print(i)
 	mycursor.commit()
 
 def main():
