@@ -1,9 +1,9 @@
 variable "user" {
-	default = 'kylexi'
+	default = "kylexi"
 }
 
 variable "password" {
-	default = 'Nine9clock!'
+	default = "Nine9clock!"
 }
 
 provider "aws" {
@@ -22,16 +22,18 @@ resource "aws_instance" "SQL-writer" {
 	tags = {
 		Name = "SQL-writer"
 	}
-	user_data = '#!/bin/bash
+	user_data = <<-EOF
+		#!/bin/bash
 		yum update -y
 		yum install git -y
 		yum install python3 -y
-		git clone https://github.com/Kylexi/Kyball.git
-		curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+		curl 'https://bootstrap.pypa.io/get-pip.py' -o 'get-pip.py'
 		python3 get-pip.py
-		pip install pandas mysql-connector-python --user
-		cd $HOME/Kyball/Scripts
-		python3 write_to_sql_from_ec2.py ${aws_Db_instance.Kyball_MySQL.address} Kyball_db ${var.user} ${var.password}'
+		cd home/ec2-user
+		git clone https://github.com/Kylexi/Kyball.git
+		cd Kyball/Scripts
+		python3 write_to_sql_from_ec2.py ${aws_db_instance.Kyball_MySQL.address} Kyball_db ${var.user} ${var.password}
+		EOF
 }
 
 resource "aws_db_instance" "Kyball_MySQL" {
@@ -42,8 +44,8 @@ resource "aws_db_instance" "Kyball_MySQL" {
   #identifier		   = "kyball-mysql"
   instance_class       = "db.t2.micro"
   name                 = "Kyball_MySQL"
-  username             = "kylexi"
-  password             = "Nine9clock!"
+  username             = var.user
+  password             = var.password
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
   vpc_security_group_ids = [
