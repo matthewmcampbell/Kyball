@@ -1,12 +1,16 @@
 import mysql.connector
 import pandas as pd
 import csv
+import sys
 
+if len(sys.argv) != 5:
+	raise ValueError('''Not enough input paramaters to write to MySQL.
+		Check user data or write_to_sql_from_ec2.py''')
 input_csv = "/home/ec2-user/Projects/Kyball/data_source/baseballdatabank-2019.2/core/"
-host = "testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
-user = "kylexi"
-passwd = "Nine9clock!"
-database = "Kyball_db"
+host = sys.argv[1] #"testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
+database = sys.argv[2] #"Kyball_db"
+user = sys.argv[3] #"kylexi"
+passwd = sys.argv[4] #"Nine9clock!"
 
 connection = mysql.connector.connect(
 	host = host,
