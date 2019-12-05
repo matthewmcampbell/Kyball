@@ -27,8 +27,6 @@ resource "aws_instance" "SQL-writer" {
 		yum update -y
 		yum install git -y
 		yum install python3 -y
-		curl 'https://bootstrap.pypa.io/get-pip.py' -o 'get-pip.py'
-		python3 get-pip.py
 		cd home/ec2-user
 		git clone https://github.com/Kylexi/Kyball.git
 		cd Kyball/Scripts
