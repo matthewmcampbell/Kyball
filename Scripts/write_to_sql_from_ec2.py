@@ -5,7 +5,7 @@ import sys
 if len(sys.argv) != 5:
 	raise ValueError('''Not enough input paramaters to write to MySQL.
 		Check user data or write_to_sql_from_ec2.py''')
-input_csv = "/home/ec2-user/Projects/Kyball/data_source/baseballdatabank-2019.2/core/"
+input_csv = "/home/ec2-user/Kyball/data_source/baseballdatabank-2019.2/core/"
 host = sys.argv[1] #"testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
 database = sys.argv[2] #"Kyball_db"
 user = sys.argv[3] #"kylexi"
