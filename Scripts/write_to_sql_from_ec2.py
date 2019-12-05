@@ -3,8 +3,10 @@ import csv
 import sys
 
 if len(sys.argv) != 5:
-	raise ValueError('''Not enough input paramaters to write to MySQL.
+	raise ValueError('''Not enough input 
+		paramaters to write to MySQL.
 		Check user data or write_to_sql_from_ec2.py''')
+
 input_csv = "/home/ec2-user/Kyball/data_source/baseballdatabank-2019.2/core/"
 host = sys.argv[1] #"testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
 database = sys.argv[2] #"Kyball_db"
@@ -122,5 +124,7 @@ def main():
 	write_data('People', people_tbl_str, input_csv)
 	write_data('Batting', batting_tbl_str, input_csv)
 
+	mycursor.close()
+	connection.close()
 if __name__ == '__main__':
 	main()

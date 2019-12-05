@@ -39,7 +39,7 @@ resource "aws_db_instance" "Kyball_MySQL" {
   storage_type         = "gp2"
   engine               = "mysql"
   engine_version       = "5.7"
-  #identifier		   = "kyball-mysql"
+  identifier		   = "kyball-mysql"
   instance_class       = "db.t2.micro"
   name                 = "Kyball_MySQL"
   username             = var.user
