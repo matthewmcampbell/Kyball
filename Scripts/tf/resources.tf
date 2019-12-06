@@ -1,9 +1,11 @@
 variable "user" {
-	default = "kylexi"
+	#default = "kylexi"
+	#default = yamldecode(file("resources_secrets.yml"))["user"]
 }
 
 variable "password" {
-	default = "Nine9clock!"
+	#default = "Nine9clock!"
+	#default = "${yamldecode(file("resources_secrets.yml"))["password"]}"
 }
 
 provider "aws" {

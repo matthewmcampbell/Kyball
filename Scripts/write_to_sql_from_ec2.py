@@ -8,10 +8,10 @@ if len(sys.argv) != 5:
 		Check user data or write_to_sql_from_ec2.py''')
 
 input_csv = "/home/ec2-user/Kyball/data_source/baseballdatabank-2019.2/core/"
-host = sys.argv[1] #"testmysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
+host = sys.argv[1] #point to AWS MySQL DB
 database = sys.argv[2] #"Kyball_db"
-user = sys.argv[3] #"kylexi"
-passwd = sys.argv[4] #"Nine9clock!"
+user = sys.argv[3]
+passwd = sys.argv[4]
 
 connection = mysql.connector.connect(
 	host = host,
