@@ -1,0 +1,2 @@
+user = "INSERT USERNAME HERE"
+password = "INSERT PASSWORD HERE"
