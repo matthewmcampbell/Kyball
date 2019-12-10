@@ -15,3 +15,8 @@ Second, the user data performs a Git pull from this repo to gain the csv files f
 Requirements:
 	-AWS account with CLI setup
 	-Terraform properly installed
+	-Create a file in your Terraform dir "terraform.tfvars" with the contents:
+		user = "INSERT USERNAME HERE"
+		password = "INSERT PASSWORD HERE"
+	-Keep the quotes in the above.
+	
