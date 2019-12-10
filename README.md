@@ -12,11 +12,11 @@ First, Terraform spins up an RHEL EC2 instance (with user data script), an AWS R
 
 Second, the user data performs a Git pull from this repo to gain the csv files for the baseball data as well as some installations like Python, pip, etc.. The script ends with a call to a python module 'write_to_sql_from_ec2.py' with options dynamically populated from Terraform. This module performs all of the write operations on the MySQL database.
 
-Requirements:
-	-AWS account with CLI setup
-	-Terraform properly installed
-	-Create a file in your Terraform dir "terraform.tfvars" with the contents:
-		user = "INSERT USERNAME HERE"
-		password = "INSERT PASSWORD HERE"
-	-Keep the quotes in the above.
-	
+Requirements:<br />
+	-AWS account with CLI setup<br />
+	-Terraform properly installed<br />
+	-Create a file in your Terraform dir "terraform.tfvars" with the contents:<br />
+		user = "INSERT USERNAME HERE"<br />
+		password = "INSERT PASSWORD HERE"<br />
+	-Keep the quotes in the above.<br />
+
