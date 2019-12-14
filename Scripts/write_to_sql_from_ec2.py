@@ -2,39 +2,20 @@ import mysql.connector
 import csv
 import sys
 
-if len(sys.argv) != 5:
-	raise ValueError('''Not enough input 
-		paramaters to write to MySQL.
-		Check user data or write_to_sql_from_ec2.py''')
-
-input_csv = "/home/ec2-user/Kyball/data_source/baseballdatabank-2019.2/core/"
-host = sys.argv[1] #point to AWS MySQL DB
-database = sys.argv[2] #"Kyball_db"
-user = sys.argv[3]
-passwd = sys.argv[4]
-
-connection = mysql.connector.connect(
-	host = host,
-	user = user,
-	passwd = passwd,
-	# database = database
-)
-mycursor = connection.cursor(buffered=True)
-
-def make_db_and_switch(db_name):
+def make_db_and_switch(db_name, cursor):
 	try:
-		mycursor.execute('CREATE DATABASE {}'.format(db_name))
-		mycursor.execute('USE {}'.format(db_name))
+		cursor.execute('CREATE DATABASE {}'.format(db_name))
+		cursor.execute('USE {}'.format(db_name))
 	except:
-		mycursor.execute('USE {}'.format(db_name))
+		cursor.execute('USE {}'.format(db_name))
 
-def check_tbl_exists(tbl_name, create_tbl_str):
+def check_tbl_exists(tbl_name, create_tbl_str, cursor):
 	try:
-		mycursor.execute("""
+		cursor.execute("""
 			SELECT * FROM {} WHERE id=1
 			""".format(tbl_name))
 	except mysql.connector.errors.ProgrammingError as e:
-		mycursor.execute(create_tbl_str)
+		cursor.execute(create_tbl_str)
 
 people_tbl_str = """CREATE TABLE People (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -51,8 +32,8 @@ people_tbl_str = """CREATE TABLE People (
 	deathCountry VARCHAR(50),
 	deathState VARCHAR(50),
 	deathCity VARCHAR(50),
-	nameLast VARCHAR(50),
 	nameFirst VARCHAR(50),
+	nameLast VARCHAR(50),
 	nameGiven VARCHAR(100),
 	weight INT,
 	height INT,
@@ -100,7 +81,7 @@ def pull_col_headers(tbl_str):
 		header_as_string += header + ', '
 	return header_as_string[:-2]
 
-def write_data(tbl_name, tbl_str, path_to_csv):
+def write_data(tbl_name, tbl_str, path_to_csv, cursor):
 	path_to_csv += tbl_name + '.csv' #update path to specific csv
 	headers = pull_col_headers(tbl_str)
 	data = csv.reader(open(path_to_csv,'r'))
@@ -110,19 +91,37 @@ def write_data(tbl_name, tbl_str, path_to_csv):
 	abstract_values = abstract_values[:-2]
 	for i in range(1, len(data)):
 		sql_cmd = "INSERT INTO {} ({}) VALUES ({});".format(tbl_name, headers, abstract_values)
-		mycursor.execute(sql_cmd, data[i])
-		print(i)
+		cursor.execute(sql_cmd, data[i])
+		# print(i)
 	connection.commit()
 
 def main():
-	make_db_and_switch(database)
+	if len(sys.argv) != 5:
+		raise ValueError('''Not enough input 
+			paramaters to write to MySQL.
+			Check user data or write_to_sql_from_ec2.py''')
 
-	check_tbl_exists("People", people_tbl_str)
-	check_tbl_exists("Batting", batting_tbl_str)
+	input_csv = "/home/ec2-user/Kyball/data_source/baseballdatabank-2019.2/core/"
+	host = sys.argv[1] #point to AWS MySQL DB
+	database = sys.argv[2] #"Kyball_db"
+	user = sys.argv[3]
+	passwd = sys.argv[4]
+
+	connection = mysql.connector.connect(
+		host = host,
+		user = user,
+		passwd = passwd,
+		# database = database
+	)
+	mycursor = connection.cursor(buffered=True)
+	make_db_and_switch(database, mycursor)
+
+	check_tbl_exists("People", people_tbl_str, mycursor)
+	check_tbl_exists("Batting", batting_tbl_str, mycursor)
 	mycursor.execute("SHOW TABLES;")
 
-	write_data('People', people_tbl_str, input_csv)
-	write_data('Batting', batting_tbl_str, input_csv)
+	write_data('People', people_tbl_str, input_csv, mycursor)
+	write_data('Batting', batting_tbl_str, input_csv, mycursor)
 
 	mycursor.close()
 	connection.close()
