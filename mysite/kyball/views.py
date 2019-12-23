@@ -48,20 +48,25 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
 import mysql.connector
-from .plotly.graph_update import update_graph_info
+from .plotly.graph_update import update_graph_info, make_connection
 
 host = "kyball-mysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
 user = "kylexi"
 passwd = "Nine9clock!"
 database = "Kyball_db"
 
-connection = mysql.connector.connect(
-    host = host,
-    user = user,
-    passwd = passwd,
-    database = database
-)
-mycursor = connection.cursor(buffered=True)
+# connection = mysql.connector.connect(
+#     host = host,
+#     user = user,
+#     passwd = passwd,
+#     database = database
+# )
+# mycursor = connection.cursor(buffered=True)
+
+try:
+    mycursor = make_connection(host, user, passwd, database)
+except:
+    mycursor = None
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -69,6 +74,7 @@ app = DjangoDash("kyball_graph", external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
     dcc.Graph(id='graph'),
+    html.Br(),
     html.Div(
     children=["Enter Name: ",dcc.Input(id='name', value='Babe Ruth', type='text', debounce=True)],  # fill out your Input however you need
     style=dict(display='flex', justifyContent='center')
