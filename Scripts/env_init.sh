@@ -11,4 +11,4 @@ pip3 install -r dev_requirements.txt
 #
 python3 setup.py develop
 
-pip3 install pandas django-plotly-dash
+pip3 install django-plotly-dash mysql-connector-python
