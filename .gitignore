@@ -2,5 +2,11 @@
 
 #ignore pycaches
 *.pyc
+
+*.zip
+
 /Scripts/tf/*
 !/Scripts/tf/*.tf
+
+/Scripts/eb_tf/*
+!/Scripts/eb_tf/*.tf
