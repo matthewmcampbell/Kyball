@@ -5,6 +5,8 @@
 
 *.zip
 
+/mysite/mysite/django_cname.txt
+
 /Scripts/tf/*
 !/Scripts/tf/*.tf
 

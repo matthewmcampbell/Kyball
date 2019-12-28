@@ -25,7 +25,17 @@ SECRET_KEY = 'bxj$o=8sh-1xxu4!v@(a2&3fo(8otyx4_%=(rsj38me6y8+ctr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.xksz7bngux.us-east-1.elasticbeanstalk.com']
+### MODIFICATION TO SETTINGS, allows for dynamic allowed host setting ###
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, './django_cname.txt')
+try:
+    file = open(filename, 'r')
+    host = file.readlines()[0].strip()
+except:
+    host = None
+
+
+ALLOWED_HOSTS = [host]
 
 
 # Application definition
