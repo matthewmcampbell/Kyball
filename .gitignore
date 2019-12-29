@@ -12,3 +12,4 @@
 
 /Scripts/eb_tf/*
 !/Scripts/eb_tf/*.tf
+!/Scripts/eb_tf/*.py
