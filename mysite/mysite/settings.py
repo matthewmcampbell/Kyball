@@ -35,7 +35,7 @@ except:
     host = None
 
 
-ALLOWED_HOSTS = [host]
+ALLOWED_HOSTS = [host, '127.0.0.1']
 
 
 # Application definition
