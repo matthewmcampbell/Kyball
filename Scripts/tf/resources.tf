@@ -17,7 +17,6 @@ resource "aws_instance" "SQL-writer" {
 	ami = "ami-0c322300a1dd5dc79"
 	depends_on = [aws_db_instance.Kyball_MySQL]
 	instance_type = "t2.micro"
-	key_name = "mmc_user1"
 	security_groups = [
     	aws_security_group.SSH_to_EC2.name,
     	]

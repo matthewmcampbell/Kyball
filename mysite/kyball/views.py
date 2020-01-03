@@ -50,18 +50,20 @@ from django_plotly_dash import DjangoDash
 import mysql.connector
 from .plotly.graph_update import update_graph_info, make_connection
 
-host = "kyball-mysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
-user = "kylexi"
-passwd = "Nine9clock!"
-database = "Kyball_db"
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, './db_access_info.txt')
 
-# connection = mysql.connector.connect(
-#     host = host,
-#     user = user,
-#     passwd = passwd,
-#     database = database
-# )
-# mycursor = connection.cursor(buffered=True)
+try:
+    file   = open(filename, 'r')
+    host   = file.readlines()[0].strip()
+    user   = file.readlines()[1].strip()
+    passwd = file.readlines()[2].strip()
+except:
+    host = None
+    user = None
+    passwd = None
+
+database = "Kyball_db"
 
 try:
     mycursor = make_connection(host, user, passwd, database)

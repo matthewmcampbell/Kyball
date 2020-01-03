@@ -5,15 +5,23 @@ import mysql.connector
 '''
 Testing
 '''
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, './db_access_info.txt')
 
-host = "kyball-mysql.cjgpo2iwqpsx.us-east-1.rds.amazonaws.com"
-user = "kylexi"
-passwd = "Nine9clock!"
+try:
+    file   = open(filename, 'r')
+    host   = file.readlines()[0].strip()
+    user   = file.readlines()[1].strip()
+    passwd = file.readlines()[2].strip()
+except:
+    host = None
+    user = None
+    passwd = None
+
 database = "Kyball_db"
 
 def test_connection():
 	connection, cursor = make_connection(host, user, passwd, database)
-	print(type(cursor))
 	assert(type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered)
 
 def test_bad_query_1():

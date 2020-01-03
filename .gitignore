@@ -6,6 +6,7 @@
 *.zip
 
 /mysite/mysite/django_cname.txt
+/mysite/kyball/db_access_info.txt
 
 /Scripts/tf/*
 !/Scripts/tf/*.tf
