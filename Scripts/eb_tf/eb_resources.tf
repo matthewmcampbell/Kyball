@@ -60,7 +60,6 @@ resource "aws_db_instance" "Kyball_MySQL" {
   skip_final_snapshot  = true
   vpc_security_group_ids = [
       aws_security_group.EC2_to_MySQL.id,
-      aws_security_group.EC2_to_None.id
       ]
 }
 
@@ -115,31 +114,6 @@ resource "aws_security_group" "EC2_to_MySQL" {
   }
 }
 
-resource "aws_security_group" "EC2_to_None" {
-  name        = "EC2_to_None"
-  description = "Allows EC2 to access MySQL RDS"
-  #vpc_id      = aws_vpc.main.id
-  #depends_on = [aws_db_instance.Kyball_MySQL]
-  ingress {
-    # TLS (change to whatever ports you need)
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    # Please restrict your ingress to only necessary IPs and ports.
-    # Opening to 0.0.0.0/0 can lead to security vulnerabilities.
-    # cidr_blocks = 0.0.0.0/0
-    security_groups = [
-      ]
-  }
-
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
-    # prefix_list_ids = ["pl-12c4e678"]
-  }
-}
 
 resource "null_resource" "delay_zero" {
   provisioner "local-exec" {
@@ -201,7 +175,7 @@ resource "aws_elastic_beanstalk_environment" "kyball_env" {
   application         = aws_elastic_beanstalk_application.kyball_app.name
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.9.4 running Python 3.6"
 
-  depends_on          = [null_resource.delay_one, aws_security_group.EC2_to_None]
+  depends_on          = [null_resource.delay_one]
 }
 
 resource "aws_iam_service_linked_role" "elastic_beanstalk_role" {
