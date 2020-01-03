@@ -49,6 +49,7 @@ from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
 import mysql.connector
 from .plotly.graph_update import update_graph_info, make_connection
+import os
 
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, './db_access_info.txt')
