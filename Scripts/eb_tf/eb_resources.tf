@@ -237,7 +237,3 @@ output "app_version" {
 output "env_name" {
   value = aws_elastic_beanstalk_environment.kyball_env.name
 }
-
-output "eb_config" {
-  value = aws_elastic_beanstalk_environment.kyball_env.instances
-}
