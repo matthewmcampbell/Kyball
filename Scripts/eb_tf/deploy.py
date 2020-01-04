@@ -21,7 +21,6 @@ def main():
 	os.system("terraform apply -auto-approve")
 	tf_dict = tf_output_get()
 	deploy_str = aws_deploy_str(tf_dict)
-	# print(deploy_str)
 	os.system(deploy_str)
 	print("Django-app deploying... Please wait approx. 5-10 minutes for deployment to EC2 instance(s).")
 
