@@ -81,7 +81,7 @@ def pull_col_headers(tbl_str):
 		header_as_string += header + ', '
 	return header_as_string[:-2]
 
-def write_data(tbl_name, tbl_str, path_to_csv, cursor):
+def write_data(tbl_name, tbl_str, path_to_csv, cursor, connection):
 	path_to_csv += tbl_name + '.csv' #update path to specific csv
 	headers = pull_col_headers(tbl_str)
 	data = csv.reader(open(path_to_csv,'r'))
@@ -120,8 +120,8 @@ def main():
 	check_tbl_exists("Batting", batting_tbl_str, mycursor)
 	mycursor.execute("SHOW TABLES;")
 
-	write_data('People', people_tbl_str, input_csv, mycursor)
-	write_data('Batting', batting_tbl_str, input_csv, mycursor)
+	write_data('People', people_tbl_str, input_csv, mycursor, connection)
+	write_data('Batting', batting_tbl_str, input_csv, mycursor, connection)
 
 	mycursor.close()
 	connection.close()

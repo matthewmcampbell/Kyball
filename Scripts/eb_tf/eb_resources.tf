@@ -175,7 +175,7 @@ resource "aws_elastic_beanstalk_environment" "kyball_env" {
   application         = aws_elastic_beanstalk_application.kyball_app.name
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.9.4 running Python 3.6"
 
-  depends_on          = [null_resource.delay_one]
+  depends_on          = [null_resource.delay_one, aws_security_group.EC2_to_MySQL]
 }
 
 resource "aws_iam_service_linked_role" "elastic_beanstalk_role" {

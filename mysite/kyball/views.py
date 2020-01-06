@@ -1,3 +1,12 @@
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import mysql.connector
+import os
+
+from dash.dependencies import Input, Output
+from django_plotly_dash import DjangoDash
+from .plotly.graph_update import update_graph_info, make_connection
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -15,50 +24,14 @@ class IndexView(generic.ListView):
         return Question.objects.order_by('-pub_data')[:5]
 
 
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'polls/detail.html'
-
-
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'polls/results.html'
-
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-from django_plotly_dash import DjangoDash
-import mysql.connector
-from .plotly.graph_update import update_graph_info, make_connection
-import os
-
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, './db_access_info.txt')
+filename = os.path.join(dirname, 'db_access_info.txt')
 
 try:
-    file   = open(filename, 'r')
-    host   = file.readlines()[0].strip()
-    user   = file.readlines()[1].strip()
-    passwd = file.readlines()[2].strip()
+    file   = list(open(filename, 'r').readlines())
+    host   = file[0].strip()
+    user   = file[1].strip()
+    passwd = file[2].strip()
 except:
     host = None
     user = None
@@ -67,10 +40,16 @@ except:
 database = "Kyball_db"
 
 try:
-    mycursor = make_connection(host, user, passwd, database)
+    connection = mysql.connector.connect(
+        host = host,
+        user = user,
+        passwd = passwd,
+        database = database
+    )
+    mycursor = connection.cursor(buffered=True)
 except:
     mycursor = None
-
+    
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash("kyball_graph", external_stylesheets=external_stylesheets)

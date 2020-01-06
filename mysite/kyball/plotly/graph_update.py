@@ -17,7 +17,7 @@ def query(nameFirst, nameLast, cursor):
 	capital = lambda x: x[0].upper() + x[1:]
 	nameFirst = capital(nameFirst.strip())
 	nameLast = capital(nameLast.strip())
-	cursor.execute("SELECT * FROM People where nameFirst='%s' AND nameLast='%s'" % (nameLast, nameFirst))
+	cursor.execute("SELECT * FROM People where nameFirst='%s' AND nameLast='%s'" % (nameFirst, nameLast))
 	player = cursor.fetchone()
 	if player == None:
 		return None

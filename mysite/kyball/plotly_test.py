@@ -1,18 +1,18 @@
 # import plotly.kyball_sql_query as # import plotly.graph_update as gu
 from .plotly.graph_update import update_graph_info, make_connection, query, get_headers
 import mysql.connector
-
+import os
 '''
 Testing
 '''
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, './db_access_info.txt')
+filename = os.path.join(dirname, 'db_access_info.txt')
 
 try:
-    file   = open(filename, 'r')
-    host   = file.readlines()[0].strip()
-    user   = file.readlines()[1].strip()
-    passwd = file.readlines()[2].strip()
+    file   = list(open(filename, 'r').readlines())
+    host   = file[0].strip()
+    user   = file[1].strip()
+    passwd = file[2].strip()
 except:
     host = None
     user = None
@@ -21,6 +21,7 @@ except:
 database = "Kyball_db"
 
 def test_connection():
+	print(file.readlines(), host, user, passwd, database)
 	connection, cursor = make_connection(host, user, passwd, database)
 	assert(type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered)
 
