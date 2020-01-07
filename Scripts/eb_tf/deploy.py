@@ -1,5 +1,6 @@
 import os.path
 import subprocess
+import time
 
 def tf_output_get():
 	if os.path.exists("./terraform.tfstate"):
@@ -16,11 +17,20 @@ def aws_deploy_str(tf_dict, region = 'us-east-1'):
 		region, tf_dict['env_name'], tf_dict['app_version']
 		)
 
+def remove_problem_pycache():
+	try:
+		os.remove("../../mysite/kyball/__pycache__/views.cpython-37.pyc")
+		print("Successfully removed pycache... Proceeding.")
+	except:
+		print("No pycache removed.")
+
 def main():
+	remove_problem_pycache()
 	os.system("terraform init")
 	os.system("terraform apply -auto-approve")
 	tf_dict = tf_output_get()
 	deploy_str = aws_deploy_str(tf_dict)
+	time.sleep(300)
 	os.system(deploy_str)
 	print("Django-app deploying... Please wait approx. 5-10 minutes for deployment to EC2 instance(s).")
 

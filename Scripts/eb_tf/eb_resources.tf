@@ -57,6 +57,7 @@ resource "aws_db_instance" "Kyball_MySQL" {
   username             = var.user
   password             = var.password
   parameter_group_name = "default.mysql5.7"
+  publicly_accessible  = true
   skip_final_snapshot  = true
   vpc_security_group_ids = [
       aws_security_group.EC2_to_MySQL.id,
@@ -143,7 +144,7 @@ resource "aws_s3_bucket" "dist_bucket" {
 }
 
 resource "aws_s3_bucket_object" "dist_item" {
-  key    = join("", [var.environment, "/dist", uuid()])
+  key    = join("", [var.environment, "/dist", uuid(),".zip"])
   bucket = aws_s3_bucket.dist_bucket.id
   source = data.archive_file.django_zip.output_path
 
