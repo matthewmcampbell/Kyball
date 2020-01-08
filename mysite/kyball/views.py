@@ -6,7 +6,7 @@ import os
 
 from dash.dependencies import Input, Output
 from django_plotly_dash import DjangoDash
-from .plotly.graph_update import update_graph_info, make_connection
+from .plotly.graph_update import update_graph_info, initial_query
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -47,9 +47,11 @@ try:
         database = database
     )
     mycursor = connection.cursor(buffered=True)
+    dfs = initial_query(mycursor)
 except:
     mycursor = None
-    
+    dfs = None  
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash("kyball_graph", external_stylesheets=external_stylesheets)
@@ -67,4 +69,4 @@ app.layout = html.Div([
     Output('graph', 'figure'),
     [Input('name', 'value')])
 def update_figure(name):
-    return update_graph_info(name, mycursor)
+    return update_graph_info(name, dfs)
