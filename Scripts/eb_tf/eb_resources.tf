@@ -23,6 +23,12 @@ variable "user" {
 variable "password" {
 }
 
+variable "registered_dns" {
+}
+
+variable "zone_id" {
+}
+
 resource "aws_instance" "SQL-writer" {
   ami = "ami-0c322300a1dd5dc79"
   depends_on = [aws_db_instance.Kyball_MySQL]
@@ -204,6 +210,25 @@ resource "null_resource" "delay_two" {
 #  triggers = {
 #    "before" = "${null_resource.before.id}"
 #  }
+}
+
+### Route 53 Resources ###
+
+data "aws_elastic_beanstalk_hosted_zone" "current" {}
+
+resource "aws_route53_zone" "kyball_zone" {
+  name = var.registered_dns
+}
+
+resource "aws_route53_record" "alias_record" {
+  zone_id = aws_route53_zone.kyball_zone.zone_id #data.?
+  name    = aws_route53_zone.kyball_zone.name #data.?
+  type    = "A"
+alias {
+   name    = aws_elastic_beanstalk_environment.kyball_env.cname
+   zone_id = data.aws_elastic_beanstalk_hosted_zone.current.id
+   evaluate_target_health = false
+  }
 }
 
 output "app_version" {

@@ -2,6 +2,7 @@ import os.path
 import subprocess
 import time
 
+
 def tf_output_get():
 	if os.path.exists("./terraform.tfstate"):
 		string = subprocess.check_output("terraform output")
@@ -25,8 +26,17 @@ def remove_problem_pycache():
 		print("No pycache removed.")
 
 def main():
+	zone_id = None
+	file = open("./terraform.tfvars", 'r')
+	X = list(file.readlines())
+	for key in X:
+		if "zone_id" in key:
+			zone_id = key.split("=")[1].strip()
+			
 	remove_problem_pycache()
 	os.system("terraform init")
+	if zone_id:
+		os.system("terraform import aws_route53_zone.kyball_zone {}".format(zone_id))
 	os.system("terraform apply -auto-approve")
 	tf_dict = tf_output_get()
 	deploy_str = aws_deploy_str(tf_dict)
