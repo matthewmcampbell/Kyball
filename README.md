@@ -16,7 +16,7 @@ Requirements:<br />
 	<ul>
 		<li>AWS account with CLI setup</li>
 		<li>Terraform properly installed</li>
-		<li>Create a file in your Terraform dir "terraform.tfvars" with the contents:<br />
+		<li>Create a file in the Scripts/tf directory "terraform.tfvars" with the contents:<br />
 		user = "INSERT USERNAME HERE"<br />
 		password = "INSERT PASSWORD HERE"<br />
 		registered_dns = "INSERT OWNED DNS HERE"<br />

@@ -39,22 +39,50 @@ except:
 
 database = "Kyball_db"
 
-try:
-    connection = mysql.connector.connect(
-        host = host,
-        user = user,
-        passwd = passwd,
-        database = database
-    )
-    mycursor = connection.cursor(buffered=True)
-    dfs = initial_query(mycursor)
-except:
-    mycursor = None
-    dfs = None  
+max_connect_attempts = 1000
+attempts = 0
+
+while attempts < max_connect_attempts:
+    try:
+        connection = mysql.connector.connect(
+            host = host,
+            user = user,
+            passwd = passwd,
+            database = database
+        )
+        mycursor = connection.cursor(buffered=True)
+        dfs = initial_query(mycursor)
+        break
+    except:
+        mycursor = None
+        dfs = None
+        attempts += 1  
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash("kyball_graph", external_stylesheets=external_stylesheets)
+
+# app.layout = html.Div([
+#     html.Div([
+#         html.Div([
+#             html.H3('Column 1'),
+#             dcc.Graph(id='g1', figure={'data': [{'y': [1, 2, 3]}]})
+#         ], className="six columns"),
+
+#         html.Div([
+#             html.H3('Column 2'),
+#             dcc.Graph(id='g2', figure={'data': [{'y': [1, 2, 3]}]})
+#         ], className="six columns"),
+#     ], className="row"),
+#     html.Div(
+#     children=["Enter Name: ",dcc.Input(id='name', value='Babe Ruth', type='text', debounce=True)],  # fill out your Input however you need
+#     style=dict(display='flex', justifyContent='center')
+#     )
+# ])
+
+# app.css.append_css({
+#     'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
+# })
 
 app.layout = html.Div([
     dcc.Graph(id='graph'),

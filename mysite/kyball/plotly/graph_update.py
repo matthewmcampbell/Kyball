@@ -3,18 +3,18 @@ import mysql.connector
 import csv
 import sys
 
-def query_1(nameFirst, nameLast, cursor):
-	capital = lambda x: x[0].upper() + x[1:]
-	nameFirst = capital(nameFirst.strip())
-	nameLast = capital(nameLast.strip())
-	cursor.execute("SELECT * FROM People where nameFirst='%s' AND nameLast='%s'" % (nameFirst, nameLast))
-	player = cursor.fetchone()
-	if player == None:
-		return None
-	playerID = player[1]
-	cursor.execute("SELECT * FROM Batting where playerID='%s'" % (playerID))
-	batting_record = cursor.fetchall()
-	return(batting_record)
+# def query_1(nameFirst, nameLast, cursor):
+# 	capital = lambda x: x[0].upper() + x[1:]
+# 	nameFirst = capital(nameFirst.strip())
+# 	nameLast = capital(nameLast.strip())
+# 	cursor.execute("SELECT * FROM People where nameFirst='%s' AND nameLast='%s'" % (nameFirst, nameLast))
+# 	player = cursor.fetchone()
+# 	if player == None:
+# 		return None
+# 	playerID = player[1]
+# 	cursor.execute("SELECT * FROM Batting where playerID='%s'" % (playerID))
+# 	batting_record = cursor.fetchall()
+# 	return(batting_record)
 
 # print(query_1("Babe","Ruth",mycursor))
 
@@ -44,16 +44,12 @@ def initial_query(cursor):
 	df_batting = pd.DataFrame(cursor.fetchall(), columns=headers)
 	return({"df_people": df_people, "df_batting": df_batting})
 
-# dfs = initial_query(mycursor)
-# print(query("Babe", "Ruth", dfs[0], dfs[1]))
 def update_graph_info(name, dfs):
 	name = name.strip()
 	names = name.split()
 	if len(names) != 2:
 		raise ValueError("Names aren't formatted well.")
 	df = query(names[0], names[1], dfs['df_people'], dfs['df_batting'])
-	# headers = get_headers("Batting", cursor)
-	# df = pd.DataFrame(sql_data, columns=headers)
 	traces = []
 	traces.append(dict(
 		x=df['yearID'],
