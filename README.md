@@ -8,6 +8,8 @@ What all happens?
 
 Good question.
 
+![Alt text](mysite/static/kyball/images/diagram_with_numbers.png?raw=true "Infrastructure")
+
 First, Terraform spins up an RHEL EC2 instance (with user data script), an AWS RDS MySQL instance, and appropriate security groups to only let the EC2 instance access the MySQL database.
 
 Second, the user data performs a Git pull from this repo to gain the csv files for the baseball data as well as some installations like Python, pip, etc.. The script ends with a call to a python module 'write_to_sql_from_ec2.py' with options dynamically populated from Terraform. This module performs all of the write operations on the MySQL database.
