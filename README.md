@@ -9,7 +9,7 @@ What all happens?
 Good question.
 
 ![Alt text](mysite/static/kyball/images/diagram_with_numbers.png?raw=true "Infrastructure")
-1. Git pull from
+1. Git pull from here.
 
 2. Python script executes Terraform commands, e.g., "terraform init", "terraform apply", etc. This portion of the infrastructure is where the single, on-off command lies. A single shell command ("python deploy.py") will provision and connect all the necessary components henceforth. See the README in the git source if you'd like to explore doing this yourself.
         
