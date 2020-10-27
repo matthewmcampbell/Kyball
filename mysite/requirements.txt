@@ -21,7 +21,7 @@ colorama==0.4.3
 constantly==15.1.0
 coverage==4.5.4
 coveralls==1.9.2
-cryptography==2.8
+cryptography==3.2
 daphne==2.4.1
 dash==1.7.0
 dash-bootstrap-components==0.8.0
