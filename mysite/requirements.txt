@@ -85,7 +85,7 @@ python-coveralls==2.9.3
 python-dateutil==2.8.1
 pytz==2019.3
 pywin32-ctypes==0.2.0
-PyYAML==5.2
+PyYAML==5.4
 readme-renderer==24.0
 redis==3.3.11
 requests==2.22.0
