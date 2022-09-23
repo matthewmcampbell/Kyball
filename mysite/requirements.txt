@@ -68,7 +68,7 @@ pkginfo==1.5.0.1
 plotly==4.4.1
 pluggy==0.13.1
 port-for==0.3.1
-protobuf==3.11.2
+protobuf==3.18.3
 py==1.8.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.7
